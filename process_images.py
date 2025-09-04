@@ -136,7 +136,7 @@ def download_images_with_english_names(base_url, images, keyword, output_dir):
     # --- NEW: Filter the images list BEFORE processing them ---
     print("Filtering image list to exclude unwanted files...")
     
-    filtered_images = [img for img in images if "升阶装束" not in img["name"] and "" not in img["name"]]
+    filtered_images = [img for img in images if "升阶装束" not in img["name"] or "" not in img["name"]]
     
     print(f"Found {len(images)} images initially. Will process {len(filtered_images)} after filtering.")
     
