@@ -1,0 +1,40 @@
+name: Download and Push Data
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  download_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run unified script
+        run: python process_images.py "https://wiki.biligame.com/wqmt" "升阶" --output Splash
+
+      - name: Filter and remove unwanted files
+        run: |
+          find Splash -name "*升阶装束*" -delete
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "NowhereArchive"
+          git config --global user.email "Juliesleimane8@gmail.com"
+          git add .
+          git commit -m "Automated data download"
+          git push
